@@ -61,19 +61,23 @@ class Fitness:
         :return:适应度值
         """
         distances = [list(map(Fitness.distances, FAKE_POINTS, uav_points)) for uav_points in uav_points_list]
+        t_ds = [[distances[n][t] for n in range(len(distances))] for t in range(len(distances[0]))]
+
+        # n_t_ks ｎ表示ｎ架飞机，ｔ表示ｔ个时刻，ｋ表示ｋ个雷达, shape(n_t_ks)=(20,4)
+        # [[(1, 0), (3, 4), (4, 3), (5242.194153377439, 4290.566586304617, 7554.080268124958)], [(0, 1), (4, 3), (6, 1), (7195.230361679737, 5161.329938602927, 6801.371035079191)],...]
+        n_t_ks = list(map(Fitness._get_3_points, t_ds))
+        # print(n_t_ks)
+        fitness_values = [a / (sum(i[-1]) / len(i[-1])) for i in n_t_ks]
+        fitness = sum(fitness_values) / len(fitness_values)
+
         # print(distances)
         # print(distances[0])
         # print(distances[0][0])
         # print(len(distances))
         # print(len(distances[0]))
         # print(len(distances[0][0]))
-
-        t_ds = []
-        for t in range(len(distances[0])):
-            t_d = []
-            for n in range(len(distances)):
-                t_d.append(distances[n][t])
-            t_ds.append(t_d)
+        # print(fitness_values)
+        # print(min(fitness_values), max(fitness_values))
 
         # print(t_ds)
         # print(t_ds[0])
@@ -81,16 +85,6 @@ class Fitness:
         # print(len(t_ds))
         # print(len(t_ds[0]))
         # print(len(t_ds[0][0]))
-
-        # n_t_ks ｎ表示ｎ架飞机，ｔ表示ｔ个时刻，ｋ表示ｋ个雷达, shape(n_t_ks)=(20,4)
-        # [[(1, 0), (3, 4), (4, 3), (5242.194153377439, 4290.566586304617, 7554.080268124958)], [(0, 1), (4, 3), (6, 1), (7195.230361679737, 5161.329938602927, 6801.371035079191)],...]
-        n_t_ks = list(map(Fitness._get_3_points, t_ds))
-        # print(n_t_ks)
-        fitness_values = [a / (sum(i[-1]) / len(i[-1])) for i in n_t_ks]
-        # print(fitness_values)
-        # print(min(fitness_values), max(fitness_values))
-        fitness = sum(fitness_values) / len(fitness_values)
-        print("fitness = ", fitness)
         return fitness
 
     @staticmethod
@@ -110,14 +104,16 @@ class Fitness:
         :param n_5:ｎ架飞机，５个距离(同一时刻同一个fake点对ｎ架飞机与５个雷达构成直线的距离)
         :return:来自３个不同飞机的同一时刻的坐标
         """
-        points_dict = {}
-        for i in range(len(n_5)):
-            for j in range(len(n_5[i])):
-                if n_5[i][j] not in points_dict.keys():
-                    points_dict[n_5[i][j]] = [i, j]
-                else:
-                    print('WARING: %f existed in the points_dict!!!' % n_5[i][j])
+        # points_dict = {}
+        # for i in range(len(n_5)):
+        #     for j in range(len(n_5[i])):
+        #         if n_5[i][j] not in points_dict.keys():
+        #             points_dict[n_5[i][j]] = [i, j]
+        #         else:
+        #             print('WARING: %f existed in the points_dict!!!' % n_5[i][j])
                     # t_i, t_j = points_dict[n_5[i][j]]
+
+        points_dict = {n_5[i][j]: [i, j] for j in range(len(n_5[0])) for i in range(len(n_5))}
         combinations_list = combinations(points_dict, 3)
         combinations_list_sorted = sorted([(i, sum(i)) for i in combinations_list], key=lambda x: x[1])
         for i in combinations_list_sorted:
@@ -129,21 +125,21 @@ class Fitness:
                 return [(i_0, j_0), (i_1, j_1), (i_2, j_2), (point0_dis, point1_dis, point2_dis)]
 
     @staticmethod
-    def generate_n_20_points(gene_code):
+    def generate_n_t_points(gene_code):
         """
 
         :param gene_code:单个基因二进制编码(保存ｎ架飞机的参数数据)
-        :return:ｎ个无人机２０个时刻的坐标
+        :return:ｎ个无人机t个时刻的坐标
         """
         uav_params = Code.decode(gene_code)
-        return list(map(Fitness._generate_20_points, uav_param) for uav_param in uav_params)
+        return list(map(Fitness._generate_t_points, uav_params))
 
     @staticmethod
-    def _generate_20_points(uav_param):
+    def _generate_t_points(uav_param):
         """
 
         :param uav_param:单个无人机的参数
-        :return:该无人机２０个时刻的坐标
+        :return:该无人机t个时刻的坐标
         """
         x, y, z, v, alpha = uav_param
         return [(x + v * TIME_INTERVAL * t * cos(alpha), y + v * TIME_INTERVAL * t * sin(alpha), z) for t in

@@ -8,7 +8,7 @@ Z_LEN = 9
 V_LEN = 10
 ALPHA_LEN = 16
 
-# 单条基因长度
+# 单个无人机的基因长度
 SINGLE_LEN = 68
 
 # 参数定义域(m)
