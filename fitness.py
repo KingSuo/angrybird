@@ -58,12 +58,12 @@ class Fitness:
         :return:适应度值
         """
         distances = [list(map(Fitness.distances, FAKE_POINTS, uav_points)) for uav_points in uav_points_list]
-        print(distances)
-        print(distances[0])
-        print(distances[0][0])
-        print(len(distances))
-        print(len(distances[0]))
-        print(len(distances[0][0]))
+        # print(distances)
+        # print(distances[0])
+        # print(distances[0][0])
+        # print(len(distances))
+        # print(len(distances[0]))
+        # print(len(distances[0][0]))
 
         t_ds = []
         for t in range(len(distances[0])):
@@ -72,14 +72,23 @@ class Fitness:
                 t_d.append(distances[n][t])
             t_ds.append(t_d)
 
-        print(t_ds)
-        print(t_ds[0])
-        print(t_ds[0][0])
-        print(len(t_ds))
-        print(len(t_ds[0]))
-        print(len(t_ds[0][0]))
+        # print(t_ds)
+        # print(t_ds[0])
+        # print(t_ds[0][0])
+        # print(len(t_ds))
+        # print(len(t_ds[0]))
+        # print(len(t_ds[0][0]))
 
-        print(list(map(Fitness._get_three_points, t_ds)))
+        # n_t_ks ｎ表示ｎ架飞机，ｔ表示ｔ个时刻，ｋ表示ｋ个雷达, shape(n_t_ks)=(20,4)
+        # [[(1, 0), (3, 4), (4, 3), (5242.194153377439, 4290.566586304617, 7554.080268124958)], [(0, 1), (4, 3), (6, 1), (7195.230361679737, 5161.329938602927, 6801.371035079191)],...]
+        n_t_ks = list(map(Fitness._get_three_points, t_ds))
+        # print(n_t_ks)
+        fitness_values = [(sum(i[-1]) / len(i[-1])) ** (-1) for i in n_t_ks]
+        # print(fitness_values)
+        # print(min(fitness_values), max(fitness_values))
+        fitness = sum(fitness_values) / len(fitness_values)
+        print("fitness = ", fitness)
+        return fitness
 
     @staticmethod
     def distances(fake_point, uav_point):
