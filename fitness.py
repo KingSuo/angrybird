@@ -1,6 +1,9 @@
 from itertools import combinations
+from math import sin, cos
 
 from utils import Utils
+from initialize import TIME_INTERVAL, TIMES
+from code import Code
 
 RADAR_1 = (80000, 0, 0)
 RADAR_2 = (30000, 60000, 0)
@@ -46,7 +49,7 @@ class Fitness:
         pass
 
     @staticmethod
-    def fitness(uav_points_list):
+    def fitness(uav_points_list, a=1000):
         """
 
         :param uav_points_list:ｎ组无人机产生的２０个点,len()= (n, 20)
@@ -81,9 +84,9 @@ class Fitness:
 
         # n_t_ks ｎ表示ｎ架飞机，ｔ表示ｔ个时刻，ｋ表示ｋ个雷达, shape(n_t_ks)=(20,4)
         # [[(1, 0), (3, 4), (4, 3), (5242.194153377439, 4290.566586304617, 7554.080268124958)], [(0, 1), (4, 3), (6, 1), (7195.230361679737, 5161.329938602927, 6801.371035079191)],...]
-        n_t_ks = list(map(Fitness._get_three_points, t_ds))
+        n_t_ks = list(map(Fitness._get_3_points, t_ds))
         # print(n_t_ks)
-        fitness_values = [(sum(i[-1]) / len(i[-1])) ** (-1) for i in n_t_ks]
+        fitness_values = [a / (sum(i[-1]) / len(i[-1])) for i in n_t_ks]
         # print(fitness_values)
         # print(min(fitness_values), max(fitness_values))
         fitness = sum(fitness_values) / len(fitness_values)
@@ -101,7 +104,7 @@ class Fitness:
         return [Utils.compute_min_distance(fake_point, radar_point, uav_point) for radar_point in RADAR_POINTS]
 
     @staticmethod
-    def _get_three_points(n_5):
+    def _get_3_points(n_5):
         """
 
         :param n_5:ｎ架飞机，５个距离(同一时刻同一个fake点对ｎ架飞机与５个雷达构成直线的距离)
@@ -125,6 +128,27 @@ class Fitness:
             if i_0 != i_1 != i_2 and j_0 != j_1 != j_2:
                 return [(i_0, j_0), (i_1, j_1), (i_2, j_2), (point0_dis, point1_dis, point2_dis)]
 
+    @staticmethod
+    def generate_n_20_points(gene_code):
+        """
+
+        :param gene_code:单个基因二进制编码(保存ｎ架飞机的参数数据)
+        :return:ｎ个无人机２０个时刻的坐标
+        """
+        uav_params = Code.decode(gene_code)
+        return list(map(Fitness._generate_20_points, uav_param) for uav_param in uav_params)
+
+    @staticmethod
+    def _generate_20_points(uav_param):
+        """
+
+        :param uav_param:单个无人机的参数
+        :return:该无人机２０个时刻的坐标
+        """
+        x, y, z, v, alpha = uav_param
+        return [(x + v * TIME_INTERVAL * t * cos(alpha), y + v * TIME_INTERVAL * t * sin(alpha), z) for t in
+                range(TIMES)]
+
 
 if __name__ == "__main__":
     # uav_point = [40000, 10000, 2100]
@@ -139,7 +163,6 @@ if __name__ == "__main__":
     # print(sorted(plzh_l, key=lambda x: x[1]))
 
     from initialize import Initialize
-    from code import Code
 
     group = Initialize.initialize(20, 10)
     print(group)
@@ -154,3 +177,5 @@ if __name__ == "__main__":
     print("=" * 10)
 
     Fitness.fitness(uav_points_list)
+# 0.1663817066213695
+# 0.18428780906821607

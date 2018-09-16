@@ -6,17 +6,25 @@ X_LEN = 17
 Y_LEN = 17
 Z_LEN = 9
 V_LEN = 10
-ALPHA_LEN = 15
+ALPHA_LEN = 16
 
+# 单条基因长度
 SINGLE_LEN = 68
 
+# 参数定义域(m)
 X_RANGE = [30000, 130000]
 Y_RANGE = [0, 110000]
 Z_RANGE = [2000, 2500]
 V_RANGE = [2000, 3000]
 
-# 0~31415
-ALPHA_RANGE = [0, int(pi * (10 ** 4))]
+# 0~31415，将2pi放大１００００倍
+ALPHA_RANGE = [0, int(2 * pi * (10 ** 4))]
+
+# 数据采集次数
+TIMES = 20
+
+# 数据采集时间间隔(s)
+TIME_INTERVAL = 10
 
 
 class Initialize:
@@ -56,3 +64,4 @@ if __name__ == "__main__":
     x, y, z, v, alpha = decode[0]
     encode = Code.encode(x, y, z, v, alpha)
     print(encode)
+
