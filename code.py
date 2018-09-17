@@ -1,5 +1,5 @@
-from initialize import X_LEN, Y_LEN, Z_LEN, V_LEN, ALPHA_LEN
-from initialize import X_RANGE, Y_RANGE, Z_RANGE, V_RANGE, ALPHA_RANGE, SINGLE_LEN
+from const import RADAR_POINTS, X_LEN, Y_LEN, Z_LEN, V_LEN, ALPHA_LEN, \
+    X_RANGE, Y_RANGE, Z_RANGE, V_RANGE, SINGLE_LEN, MIN_RADAR_NUMS, ALPHA_RANGE, TIMES, TIME_INTERVAL
 
 
 class Code:
@@ -43,7 +43,8 @@ class Code:
         v_binary = bin(((int(v) - V_RANGE[0]) * (2 ** V_LEN - 1)) // (V_RANGE[1] - V_RANGE[0])).split('0b')[-1]
 
         alpha_binary = \
-        bin(((int(alpha) - ALPHA_RANGE[0]) * (2 ** ALPHA_LEN - 1)) // (ALPHA_RANGE[1] - ALPHA_RANGE[0])).split('0b')[-1]
+            bin(((int(alpha) - ALPHA_RANGE[0]) * (2 ** ALPHA_LEN - 1)) // (ALPHA_RANGE[1] - ALPHA_RANGE[0])).split(
+                '0b')[-1]
 
         x_prefix = "0" * (X_LEN - len(x_binary)) if len(x_binary) < X_LEN else ''
         y_prefix = "0" * (Y_LEN - len(y_binary)) if len(y_binary) < Y_LEN else ''
@@ -61,12 +62,12 @@ class Code:
 
 
 if __name__ == "__main__":
-    encode_data = Code.encode(30000, 0, 2000, 2000, 0)
+    encode_data = Code.encode(30000, 0, 2000, 40, 0)
     print(encode_data)
     decode_data = Code.decode(encode_data)
     print(decode_data)
 
-    encode_data = Code.encode(130000, 110000, 2500, 3000, 31415)
+    encode_data = Code.encode(130000, 110000, 2500, 40, 31415)
     print(encode_data)
     decode_data = Code.decode(encode_data)
     print(decode_data)

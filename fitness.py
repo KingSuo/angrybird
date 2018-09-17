@@ -1,10 +1,9 @@
 from itertools import combinations
 from math import sin, cos
-from multiprocessing.dummy import Pool as ThreadPool
-from multiprocessing import Pool as ProcessPool
 
 from utils import Utils
-from initialize import TIME_INTERVAL, TIMES
+from const import RADAR_POINTS, TIMES, TIME_INTERVAL, FAKE_POINTS
+
 from code import Code
 
 RADAR_1 = (80000, 0, 0)
@@ -12,38 +11,6 @@ RADAR_2 = (30000, 60000, 0)
 RADAR_3 = (55000, 110000, 0)
 RADAR_4 = (105000, 110000, 0)
 RADAR_5 = (130000, 60000, 0)
-
-# 第一题航线坐标(m)
-FAKE_POINTS = [
-    [60600, 69982, 7995],
-    [61197, 69928, 7980],
-    [61790, 69838, 7955],
-    [62377, 69713, 7920],
-    [62955, 69553, 7875],
-    [63523, 69359, 7820],
-    [64078, 69131, 7755],
-    [64618, 68870, 7680],
-    [65141, 68577, 7595],
-    [65646, 68253, 7500],
-    [66131, 67900, 7395],
-    [66594, 67518, 7280],
-    [67026, 67116, 7155],
-    [67426, 66697, 7020],
-    [67796, 66263, 6875],
-    [68134, 65817, 6720],
-    [68442, 65361, 6555],
-    [68719, 64897, 6380],
-    [68966, 64429, 6195],
-    [69184, 63957, 6000],
-]
-
-RADAR_POINTS = [
-    [80000, 0, 0],
-    [30000, 60000, 0],
-    [55000, 110000, 0],
-    [105000, 110000, 0],
-    [130000, 60000, 0],
-]
 
 
 class Fitness:
@@ -72,22 +39,6 @@ class Fitness:
         # print(n_t_ks)
         fitness_values = [a / (sum(i[-1]) / len(i[-1])) for i in n_t_ks]
         fitness = sum(fitness_values) / len(fitness_values)
-
-        # print(distances)
-        # print(distances[0])
-        # print(distances[0][0])
-        # print(len(distances))
-        # print(len(distances[0]))
-        # print(len(distances[0][0]))
-        # print(fitness_values)
-        # print(min(fitness_values), max(fitness_values))
-
-        # print(t_ds)
-        # print(t_ds[0])
-        # print(t_ds[0][0])
-        # print(len(t_ds))
-        # print(len(t_ds[0]))
-        # print(len(t_ds[0][0]))
         return fitness
 
     @staticmethod
@@ -107,15 +58,6 @@ class Fitness:
         :param n_5:ｎ架飞机，５个距离(同一时刻同一个fake点对ｎ架飞机与５个雷达构成直线的距离)
         :return:来自３个不同飞机的同一时刻的坐标
         """
-        # points_dict = {}
-        # for i in range(len(n_5)):
-        #     for j in range(len(n_5[i])):
-        #         if n_5[i][j] not in points_dict.keys():
-        #             points_dict[n_5[i][j]] = [i, j]
-        #         else:
-        #             print('WARING: %f existed in the points_dict!!!' % n_5[i][j])
-        # t_i, t_j = points_dict[n_5[i][j]]
-
         points_dict = {n_5[i][j]: [i, j] for j in range(len(n_5[0])) for i in range(len(n_5))}
         combinations_list = combinations(points_dict, 3)
         combinations_list_sorted = sorted([(i, sum(i)) for i in combinations_list], key=lambda x: x[1])

@@ -16,7 +16,8 @@ class JustGo:
 
     @staticmethod
     def go(n, size):
-        gene_codes = Initialize.initialize(n, size)
+        gene_codes = Initialize.better_initialize(n, size)
+        print(gene_codes)
         m_n_t_points = list(map(Fitness.generate_n_t_points, gene_codes))
 
         fitness_list = list(map(Fitness.fitness, m_n_t_points))
@@ -24,10 +25,10 @@ class JustGo:
         times = 0
         threshold = 1000
 
-        while abs(threshold) > 0.000001:
+        while abs(threshold) > 0.0001 and times < 200:
             if times > 0:
                 sum_fitness_before = sum_fitness_after
-            new_gene_codes = [gene_codes[fitness_list.index(i)] for i in sorted(fitness_list, reverse=True)[:2]]
+            new_gene_codes = [gene_codes[fitness_list.index(i)] for i in sorted(fitness_list, reverse=True)[:10]]
             while len(new_gene_codes) < size:
                 gene_codes_copy = deepcopy(gene_codes)
                 index_1 = Select.select(fitness_list)
@@ -87,4 +88,4 @@ class JustGo:
 
 
 if __name__ == "__main__":
-    JustGo.go(4, 80)
+    JustGo.go(3, 50)

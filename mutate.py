@@ -1,5 +1,5 @@
 import numpy as np
-from initialize import SINGLE_LEN
+from const import SINGLE_LEN
 
 
 class Mutate:
