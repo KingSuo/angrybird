@@ -1,5 +1,7 @@
 from itertools import combinations
 from math import sin, cos
+from multiprocessing.dummy import Pool as ThreadPool
+from multiprocessing import Pool as ProcessPool
 
 from utils import Utils
 from initialize import TIME_INTERVAL, TIMES
@@ -61,6 +63,7 @@ class Fitness:
         :return:适应度值
         """
         distances = [list(map(Fitness.distances, FAKE_POINTS, uav_points)) for uav_points in uav_points_list]
+
         t_ds = [[distances[n][t] for n in range(len(distances))] for t in range(len(distances[0]))]
 
         # n_t_ks ｎ表示ｎ架飞机，ｔ表示ｔ个时刻，ｋ表示ｋ个雷达, shape(n_t_ks)=(20,4)
@@ -111,7 +114,7 @@ class Fitness:
         #             points_dict[n_5[i][j]] = [i, j]
         #         else:
         #             print('WARING: %f existed in the points_dict!!!' % n_5[i][j])
-                    # t_i, t_j = points_dict[n_5[i][j]]
+        # t_i, t_j = points_dict[n_5[i][j]]
 
         points_dict = {n_5[i][j]: [i, j] for j in range(len(n_5[0])) for i in range(len(n_5))}
         combinations_list = combinations(points_dict, 3)
@@ -142,8 +145,9 @@ class Fitness:
         :return:该无人机t个时刻的坐标
         """
         x, y, z, v, alpha = uav_param
-        return [(x + v * TIME_INTERVAL * t * cos(alpha), y + v * TIME_INTERVAL * t * sin(alpha), z) for t in
-                range(TIMES)]
+        return [
+            (x + v * TIME_INTERVAL * t * cos(alpha / (10 ** 4)), y + v * TIME_INTERVAL * t * sin(alpha / (10 ** 4)), z)
+            for t in range(TIMES)]
 
 
 if __name__ == "__main__":

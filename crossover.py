@@ -14,6 +14,9 @@ class Crossover:
         t = len(gene_list[0]) // SINGLE_LEN
         for _ in range(t if t > 0 else 1):
             gene_list = Crossover._crossover(gene_list, extra)
+        # father, mother = gene_list
+        # index = np.random.randint(0, len(gene_list[0]))
+        # gene_list = [father[:index] + mother[index:], mother[:index] + father[index:]]
         return gene_list
 
     @staticmethod

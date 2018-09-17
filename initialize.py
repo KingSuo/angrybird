@@ -5,7 +5,7 @@ import numpy as np
 X_LEN = 17
 Y_LEN = 17
 Z_LEN = 9
-V_LEN = 10
+V_LEN = 6
 ALPHA_LEN = 16
 
 # 单个无人机的基因长度
@@ -15,7 +15,7 @@ SINGLE_LEN = 68
 X_RANGE = [30000, 130000]
 Y_RANGE = [0, 110000]
 Z_RANGE = [2000, 2500]
-V_RANGE = [2000, 3000]
+V_RANGE = [33, 50]
 
 # 0~31415，将2pi放大１００００倍
 ALPHA_RANGE = [0, int(2 * pi * (10 ** 4))]
