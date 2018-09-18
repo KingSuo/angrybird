@@ -44,7 +44,7 @@ class GetRange:
                 (y1 + (z_range[0] - z1) * (y2 - y1) / (z2 - z1), y1 + (z_range[1] - z1) * (y2 - y1) / (z2 - z1))]
 
     @staticmethod
-    def get_better_value(p1, p2, z_value, bais=5):
+    def get_better_value(p1, p2, z_value, bais=0):
         x1, y1, z1 = p1
         x2, y2, z2 = p2
         x_range = (

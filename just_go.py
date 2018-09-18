@@ -17,7 +17,6 @@ class JustGo:
     @staticmethod
     def go(n, size):
         gene_codes = Initialize.better_initialize(n, size)
-        print(gene_codes)
         m_n_t_points = list(map(Fitness.generate_n_t_points, gene_codes))
 
         fitness_list = list(map(Fitness.fitness, m_n_t_points))
@@ -61,6 +60,7 @@ class JustGo:
         b = Code.decode(a)
         c = Fitness.generate_n_t_points(a)
         print(a)
+        print(a[0])
         print(b)
         print(c)
 
@@ -74,18 +74,13 @@ class JustGo:
                 t.append(z)
             data.append(t)
         data_df = pd.DataFrame(data)
-        writer = pd.ExcelWriter('%s.xlsx' % str(n))
-        data_df.to_excel(writer, 'page_1', float_format='%.5f')  # float_format 控制精度
+        writer = pd.ExcelWriter('%s架无人机航线.xlsx' % str(n))
+        data_df.to_excel(writer, '%s架无人机' % str(n), float_format='%.5f')  # float_format 控制精度
         writer.save()
-        pd.ExcelWriter.save()
-
-        # print(m_n_t_points)
-        # print(m_n_t_points[0])
-        # print(m_n_t_points[0][0])
-        # print(len(m_n_t_points))
-        # print(len(m_n_t_points[0]))
-        # print(len(m_n_t_points[0][0]))
 
 
 if __name__ == "__main__":
-    JustGo.go(3, 50)
+    import sys
+
+    n = int(sys.argv[1]) if len(sys.argv) > 1 else 3
+    JustGo.go(n, 50)

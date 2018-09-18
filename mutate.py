@@ -1,5 +1,5 @@
 import numpy as np
-from const import SINGLE_LEN
+from const import SINGLE_LEN, X_LEN, Y_LEN, Z_LEN, V_LEN, ALPHA_LEN
 
 
 class Mutate:
@@ -21,9 +21,13 @@ class Mutate:
 
     @staticmethod
     def _mutate(gene):
-        index = np.random.randint(0, len(gene))
-        change = '0' if gene[index] == '1' else '1'
-        return gene[:index] + change + gene[index + 1:]
+        front = X_LEN + Y_LEN + Z_LEN
+        indexs = [np.random.randint(front + i * SINGLE_LEN, front + V_LEN + ALPHA_LEN + i * SINGLE_LEN)
+                  for i in range(len(gene) // SINGLE_LEN)]
+        changes = ['0' if gene[index] == '1' else '1' for index in indexs]
+        for i in range(len(indexs)):
+            gene = gene[:indexs[i]] + changes[i] + gene[indexs[i] + 1:]
+        return gene
 
 
 if __name__ == '__main__':

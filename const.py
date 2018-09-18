@@ -35,7 +35,7 @@ FAKE_POINTS = [
 # 每个无人机的参数对应二进制长度之和
 X_LEN = 17
 Y_LEN = 17
-Z_LEN = 9
+Z_LEN = 12
 V_LEN = 6
 ALPHA_LEN = 16
 
