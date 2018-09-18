@@ -82,5 +82,5 @@ class JustGo:
 if __name__ == "__main__":
     import sys
 
-    n = int(sys.argv[1]) if len(sys.argv) > 1 else 3
+    n = int(sys.argv[1]) if len(sys.argv) > 1 else 4
     JustGo.go(n, 50)
