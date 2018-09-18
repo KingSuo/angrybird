@@ -3,8 +3,8 @@ from functools import reduce
 
 import numpy as np
 
-from const import Z_RANGE, RADAR_POINTS, FAKE_POINTS, TIME_INTERVAL
-from code import Code
+from v2_0.const import Z_RANGE, RADAR_POINTS, FAKE_POINTS, TIME_INTERVAL
+from v2_0.code import Code
 
 
 class Utils:
@@ -47,7 +47,7 @@ class Utils:
         :param low:
         :param high:
         :param n:
-        :return:index group
+        :return:index group--shape:(1,n)
         """
         index_group = []
         while 1:

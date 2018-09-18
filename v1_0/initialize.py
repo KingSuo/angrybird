@@ -1,9 +1,9 @@
 from functools import reduce
 import numpy as np
 
-from const import RADAR_POINTS, Z_RANGE, V_RANGE, SINGLE_LEN, ALPHA_RANGE
+from v1_0.const import RADAR_POINTS, Z_RANGE, V_RANGE, SINGLE_LEN, ALPHA_RANGE
 
-from code import Code
+from v1_0.code import Code
 
 
 class Initialize:
@@ -17,7 +17,7 @@ class Initialize:
 
     @staticmethod
     def better_initialize(n, size):
-        from get_range import GetRange
+        from v1_0.get_range import GetRange
         z_array = np.random.random_sample([size, n]) * (Z_RANGE[1] - Z_RANGE[0]) + Z_RANGE[0]
         xy_list_value = [GetRange.get_better_values(z_list) for z_list in z_array]
         radar_index = [Initialize._get_unique_index_group(0, len(RADAR_POINTS), n) for _ in range(size)]

@@ -35,18 +35,24 @@ FAKE_POINTS = [
 # 每个无人机的参数对应二进制长度之和
 X_LEN = 17
 Y_LEN = 17
-Z_LEN = 12
+
+Z_LEN = 9
 V_LEN = 6
-ALPHA_LEN = 16
+ALPHA_LEN = 10
 
 # 参数定义域(m)
 X_RANGE = [30000, 130000]
 Y_RANGE = [0, 110000]
-Z_RANGE = [2000, 2500]
+
+# must + 2000 when use it to calculate
+Z_RANGE = [0, 500]
 V_RANGE = [33, 50]
 
-# 0~31415，将2pi放大１００００倍
-ALPHA_RANGE = [0, int(2 * pi * (10 ** 4))]
+#
+Z_BAIS = 2000
+
+# 0~628，将2pi放大100倍
+ALPHA_RANGE = [0, int(2 * pi * 100)]
 
 # 数据采集次数
 TIMES = 20

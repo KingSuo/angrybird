@@ -2,12 +2,12 @@ from copy import deepcopy
 
 import pandas as pd
 
-from initialize import Initialize
-from mutate import Mutate
-from crossover import Crossover
-from fitness import Fitness
-from select_gene import Select
-from code import Code
+from v1_0.initialize import Initialize
+from v1_0.mutate import Mutate
+from v1_0.crossover import Crossover
+from v1_0.fitness import Fitness
+from v1_0.select_gene import Select
+from v1_0.code import Code
 
 
 class JustGo:

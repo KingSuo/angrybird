@@ -1,4 +1,4 @@
-from const import Z_RANGE, RADAR_POINTS, FAKE_POINTS
+from v1_0.const import Z_RANGE, RADAR_POINTS, FAKE_POINTS
 
 import numpy as np
 

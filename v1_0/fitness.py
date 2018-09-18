@@ -1,10 +1,10 @@
 from itertools import combinations
 from math import sin, cos
 
-from utils import Utils
-from const import RADAR_POINTS, TIMES, TIME_INTERVAL, FAKE_POINTS
+from v1_0.utils import Utils
+from v1_0.const import RADAR_POINTS, TIMES, TIME_INTERVAL, FAKE_POINTS
 
-from code import Code
+from v1_0.code import Code
 
 RADAR_1 = (80000, 0, 0)
 RADAR_2 = (30000, 60000, 0)
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     # print(plzh_l)
     # print(sorted(plzh_l, key=lambda x: x[1]))
 
-    from initialize import Initialize
+    from v1_0.initialize import Initialize
 
     group = Initialize.initialize(20, 10)
     print(group)

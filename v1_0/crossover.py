@@ -1,6 +1,6 @@
 import numpy as np
 
-from const import SINGLE_LEN, X_LEN, Y_LEN, Z_LEN, V_LEN, ALPHA_LEN
+from v1_0.const import SINGLE_LEN, X_LEN, Y_LEN, Z_LEN, V_LEN, ALPHA_LEN
 
 
 class Crossover:

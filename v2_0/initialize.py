@@ -1,9 +1,10 @@
 from functools import reduce
 import numpy as np
 
-from const import RADAR_POINTS, Z_RANGE, V_RANGE, SINGLE_LEN, ALPHA_RANGE
+from v2_0.const import RADAR_POINTS, Z_RANGE, V_RANGE, SINGLE_LEN, ALPHA_RANGE, Z_BAIS
 
-from code import Code
+from v2_0.code import Code
+from v2_0.utils import Utils
 
 
 class Initialize:
@@ -12,12 +13,26 @@ class Initialize:
         pass
 
     @staticmethod
-    def initialize(n, size):
-        return [reduce(lambda x, y: x + y, (Initialize._create_single_binary() for _ in range(n))) for _ in range(size)]
+    def initialize(m, n):
+        """
+
+        :param m:population size
+        :param n:number of uav
+        :return:array--shape:(m,n)
+        """
+        z_array = np.random.random_sample((m, n)) * (Z_RANGE[1] - Z_RANGE[0]) + Z_RANGE[0]
+        v_array = np.random.random_sample((m, n)) * (V_RANGE[1] - V_RANGE[0]) + V_RANGE[0]
+        alpha_array = np.random.random_sample((m, n)) * (ALPHA_RANGE[1] - ALPHA_RANGE[0]) + ALPHA_RANGE[0]
+        radar_index_groups = np.array([Utils.get_unique_index_group(0, len(RADAR_POINTS)) for _ in range(m)])
+        genes = []
+        # print(radar_index_groups)
+        # print(radar_index_groups.shape)
+        a = np.concatenate((z_array, v_array,alpha_array), axis=1)
+        print(a.shape)
 
     @staticmethod
     def better_initialize(n, size):
-        from get_range import GetRange
+        from v2_0.get_range import GetRange
         z_array = np.random.random_sample([size, n]) * (Z_RANGE[1] - Z_RANGE[0]) + Z_RANGE[0]
         xy_list_value = [GetRange.get_better_values(z_list) for z_list in z_array]
         radar_index = [Initialize._get_unique_index_group(0, len(RADAR_POINTS), n) for _ in range(size)]
@@ -54,33 +69,36 @@ class Initialize:
 
 
 if __name__ == "__main__":
-    data = Initialize.initialize(2, 3)
-    print(data)
-    print(data[0])
+    # data = Initialize.initialize(2, 3)
+    # print(data)
+    # print(data[0])
+    #
+    # decode = Code.decode(data[0])
+    # print(decode)
+    #
+    # x, y, z, v, alpha = decode[0]
+    # encode = Code.encode(x, y, z, v, alpha)
+    # print(encode)
+    #
+    # z = np.random.random_sample([3, 5]) * 500 + 2000
+    # print(z)
+    # print(np.random.random())
+    # print(np.random.random())
+    # print(np.random.random())
+    # print(np.random.random())
+    #
+    # xy_range = Initialize.better_initialize(2, 100)
+    # print(xy_range)
+    # print(xy_range[0])
+    # print(xy_range[0][0])
+    # print(len(xy_range))
+    # print(len(xy_range[0]))
+    # print(len(xy_range[0][0]))
+    #
+    # a = [1, 2]
+    # b = [2, 3]
+    # print(a + b)
+    # print(a.append(b))
 
-    decode = Code.decode(data[0])
-    print(decode)
-
-    x, y, z, v, alpha = decode[0]
-    encode = Code.encode(x, y, z, v, alpha)
-    print(encode)
-
-    z = np.random.random_sample([3, 5]) * 500 + 2000
-    print(z)
-    print(np.random.random())
-    print(np.random.random())
-    print(np.random.random())
-    print(np.random.random())
-
-    xy_range = Initialize.better_initialize(2, 100)
-    print(xy_range)
-    print(xy_range[0])
-    print(xy_range[0][0])
-    print(len(xy_range))
-    print(len(xy_range[0]))
-    print(len(xy_range[0][0]))
-
-    a = [1, 2]
-    b = [2, 3]
-    print(a + b)
-    print(a.append(b))
+    # print(np.random.random_sample((3, 5)) * (Z_RANGE[1] - Z_RANGE[0]) + Z_RANGE[0])
+    Initialize.initialize(50, 3)
